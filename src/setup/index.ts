@@ -5,6 +5,11 @@ import routes from '~pages'
 import '@/assets/base.scss'
 import './index.scss'
 
+routes.push({
+  path: '/',
+  component: App
+})
+
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes,
