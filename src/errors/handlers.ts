@@ -1,14 +1,6 @@
 import { sendMessage } from 'webext-bridge'
-
-export interface ErrorDetails {
-  message: string
-  source: string
-  lineno: number
-  colno: number
-  error: Error | null
-  context?: string
-  timestamp: number
-}
+import type { ErrorDetails } from './types'
+import { storeError } from './storage'
 
 export async function handleError(
   message: string | Event,
@@ -46,21 +38,8 @@ export async function handleError(
     console.error('Failed to send error to background:', e)
   }
 
-  // Stocker l'erreur dans le stockage local pour analyse ultérieure
-  try {
-    const errors = await chrome.storage.local.get('errors')
-    const errorList = errors.errors || []
-    errorList.push(errorDetails)
-    
-    // Garder seulement les 100 dernières erreurs
-    if (errorList.length > 100) {
-      errorList.shift()
-    }
-    
-    await chrome.storage.local.set({ errors: errorList })
-  } catch (e) {
-    console.error('Failed to store error:', e)
-  }
+  // Stocker l'erreur
+  await storeError(errorDetails)
 }
 
 export function setupErrorHandlers(context: string): void {
@@ -88,4 +67,4 @@ export function setupErrorHandlers(context: string): void {
       handleError(event.message, event.filename, event.lineno, event.colno, event.error, context)
     })
   }
-}
+} 

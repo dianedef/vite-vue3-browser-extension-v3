@@ -4,6 +4,7 @@ import App from './app.vue'
 import routes from '~pages'
 import '@/assets/base.scss'
 import './index.scss'
+import { setupErrorHandlers } from '@/utils'
 
 routes.push({
   path: '/',
@@ -19,8 +20,5 @@ const app = createApp(App)
 
 app.use(router).mount('#app')
 
-self.onerror = function (message, source, lineno, colno, error) {
-  console.info(
-    `Error: ${message}\nSource: ${source}\nLine: ${lineno}\nColumn: ${colno}\nError object: ${error}`
-  )
-}
+// Configuration des gestionnaires d'erreurs
+setupErrorHandlers('setup')
