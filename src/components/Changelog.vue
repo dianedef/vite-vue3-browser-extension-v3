@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { marked } from 'marked'
+import { inject } from 'vue'
 
-const version = __VERSION__
-const changelog = __CHANGELOG__
-const gitCommit = __GIT_COMMIT__
-const gitURL = __GITHUB_URL__
+const version = inject('__VERSION__', '')
+const changelog = inject('__CHANGELOG__', '')
+const gitCommit = inject('__GIT_COMMIT__', '')
+const gitURL = inject('__GITHUB_URL__', '')
 const commitURL = `${gitURL}/commit/${gitCommit}`
 </script>
 

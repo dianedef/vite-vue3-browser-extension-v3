@@ -1,6 +1,8 @@
 <script setup lang="ts">
-const displayName = __DISPLAY_NAME__
-const version = __VERSION__
+import { inject } from 'vue'
+
+const displayName = inject('__DISPLAY_NAME__', '')
+const version = inject('__VERSION__', '')
 </script>
 
 <template>
@@ -20,9 +22,9 @@ const version = __VERSION__
 
     <p>Icons</p>
     <div>
-      <i-fa-solid-dice-five />
-      <i-heroicons-outline:menu-alt-2 />
-      <i-heroicons-outline-menu-alt-2 />
+      <i-fa-solid-dice-five data-test="dice-icon" />
+      <i-heroicons-outline:menu-alt-2 data-test="menu-icon" />
+      <i-heroicons-outline-menu-alt-2 data-test="menu-icon-alt" />
     </div>
 
     <Changelog />
