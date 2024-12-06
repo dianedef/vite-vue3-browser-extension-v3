@@ -1,35 +1,38 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "jsx": "preserve",
+    "lib": ["ESNext", "DOM"],
     "useDefineForClassFields": true,
+    "baseUrl": ".",
     "module": "ESNext",
     "moduleResolution": "Node",
-    "strict": true,
-    "jsx": "preserve",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "lib": ["ESNext", "DOM"],
-    "skipLibCheck": true,
-    "noEmit": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
       "~pages": ["src/pages/index.ts"]
     },
+    "resolveJsonModule": true,
+    "typeRoots": ["./src/types", "./node_modules/@types"],
     "types": [
-      "vitest/globals",
+      "vitest",
       "vite/client",
       "@vue/test-utils",
+      "@types/vue__test-utils",
       "chrome"
-    ]
+    ],
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true
   },
+  "references": [{ "path": "./tsconfig.node.json" }],
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "tests/**/*.ts"
-  ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+    "tests/**/*.ts",
+    "src/types/**/*.d.ts"
+  ]
 }

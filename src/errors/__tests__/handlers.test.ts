@@ -1,71 +1,108 @@
-// Créer le mock avant les imports
-const mockShowErrorNotification = vi.fn()
-
-// Mock du module notifications
-vi.mock('../notifications', () => ({
-  showErrorNotification: mockShowErrorNotification,
-  setToastService: vi.fn()
-}))
-
-import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { createHandlersMock } from './mocks/handlers.mock'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { handleError } from '../handlers'
 import type { ToastInterface } from 'vue-toastification'
 
-describe('Error Handlers', () => {
-  let handlersMock: ReturnType<typeof createHandlersMock>
-  let mockToast: ToastInterface
+// Les mocks doivent être après les imports
+vi.mock('webextension-polyfill', () => ({
+  default: {
+    runtime: {
+      id: 'test-extension-id',
+      getManifest: () => ({ version: '1.0.0' }),
+      connect: () => ({
+        onMessage: { addListener: vi.fn() },
+        onDisconnect: { addListener: vi.fn() },
+        postMessage: vi.fn()
+      })
+    }
+  }
+}))
 
-  beforeEach(() => {
-    handlersMock = createHandlersMock()
+vi.mock('webext-bridge/content-script', () => ({
+  sendMessage: vi.fn()
+}))
+
+vi.mock('../notifications', () => ({
+  showErrorNotification: vi.fn()
+}))
+
+vi.mock('../storage', () => ({
+  storeError: vi.fn()
+}))
+
+describe('error handlers', () => {
+  let mockShowErrorNotification: ReturnType<typeof vi.fn>
+  
+  beforeEach(async () => {
     vi.clearAllMocks()
     
-    // Créer un mock du service toast
-    mockToast = {
-      error: vi.fn(),
-      success: vi.fn(),
-      warning: vi.fn(),
-      info: vi.fn(),
-      clear: vi.fn()
-    } as unknown as ToastInterface
+    // Récupérer le mock de showErrorNotification
+    const notifications = await import('../notifications')
+    mockShowErrorNotification = vi.mocked(notifications.showErrorNotification)
     
-    // Définir les propriétés avant de les mocker
-    self.onerror = () => false
-    self.onunhandledrejection = () => {}
-    
-    vi.spyOn(self, 'onerror')
-    vi.spyOn(self, 'onunhandledrejection')
+    // Mock des APIs d'extension
+    const extensionAPI = {
+      runtime: {
+        id: 'test-extension-id',
+        getManifest: vi.fn(() => ({
+          version: '1.0.0',
+          name: 'Test Extension'
+        })),
+        connect: vi.fn(() => ({
+          onMessage: { addListener: vi.fn() },
+          onDisconnect: { addListener: vi.fn() },
+          postMessage: vi.fn()
+        })),
+        sendMessage: vi.fn()
+      }
+    }
+
+    Object.defineProperty(global, 'chrome', {
+      value: extensionAPI,
+      writable: true
+    })
+
+    Object.defineProperty(global, 'browser', {
+      value: extensionAPI,
+      writable: true
+    })
   })
 
   afterEach(() => {
-    // Nettoyer les propriétés après chaque test
-    self.onerror = null
-    self.onunhandledrejection = null
     vi.clearAllMocks()
-    vi.resetModules()
   })
 
-  describe('Error handling with mocks', () => {
+  describe('handleError', () => {
     it('should handle errors correctly and show notification', async () => {
-      const context = { someContext: 'test' }
       const error = new Error('Test error')
       const message = 'Test error message'
       const source = 'test.js'
       const lineno = 1
       const colno = 1
+      const context = 'test'
 
-      const { handleError } = await import('../handlers')
       await handleError(message, source, lineno, colno, error, context)
 
       expect(mockShowErrorNotification).toHaveBeenCalledWith(
-        'Une erreur est survenue: Test error message'
+        expect.objectContaining({
+          message,
+          source,
+          lineno,
+          colno,
+          error: expect.objectContaining({
+            message: error.message,
+            name: error.name,
+            stack: error.stack
+          }),
+          context,
+          timestamp: expect.any(Number)
+        })
       )
     })
 
-    it('should handle unhandled rejections and show notification', async () => {
-      const context = { someContext: 'test' }
+    it('should handle unhandled rejections', async () => {
       const error = new Error('Test rejection')
+      const context = 'test'
       
-      const { handleError } = await import('../handlers')
       await handleError(
         error.message,
         error.stack,
@@ -76,17 +113,24 @@ describe('Error Handlers', () => {
       )
 
       expect(mockShowErrorNotification).toHaveBeenCalledWith(
-        'Une erreur est survenue: Test rejection'
+        expect.objectContaining({
+          message: error.message,
+          source: error.stack,
+          error: expect.objectContaining({
+            message: error.message,
+            name: error.name,
+            stack: error.stack
+          }),
+          context,
+          timestamp: expect.any(Number)
+        })
       )
     })
-  })
 
-  describe('Error handling with real implementation', () => {
-    it('should handle Vue errors and show notification', async () => {
-      const context = { someContext: 'test' }
+    it('should handle Vue errors', async () => {
       const error = new Error('Vue error')
+      const context = 'test'
       
-      const { handleError } = await import('../handlers')
       await handleError(
         'Vue error',
         'vue-component.vue',
@@ -97,7 +141,19 @@ describe('Error Handlers', () => {
       )
 
       expect(mockShowErrorNotification).toHaveBeenCalledWith(
-        'Une erreur est survenue: Vue error'
+        expect.objectContaining({
+          message: 'Vue error',
+          source: 'vue-component.vue',
+          lineno: 1,
+          colno: 1,
+          error: expect.objectContaining({
+            message: error.message,
+            name: error.name,
+            stack: error.stack
+          }),
+          context,
+          timestamp: expect.any(Number)
+        })
       )
     })
   })

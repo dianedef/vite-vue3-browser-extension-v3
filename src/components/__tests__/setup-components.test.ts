@@ -6,16 +6,11 @@ import Changelog from '../Changelog.vue'
 
 describe('install component', () => {
   beforeEach(() => {
-    // @ts-ignore
-    global.__VERSION__ = '1.0.0'
-    // @ts-ignore
-    global.__DISPLAY_NAME__ = 'Test Extension'
-    // @ts-ignore
-    global.__CHANGELOG__ = '# Changelog\n- Test update'
-    // @ts-ignore
-    global.__GIT_COMMIT__ = 'abc123'
-    // @ts-ignore
-    global.__GITHUB_URL__ = 'https://github.com/test/repo'
+    window.__VERSION__ = '1.0.0'
+    window.__DISPLAY_NAME__ = 'Test Extension'
+    window.__CHANGELOG__ = '# Changelog\n- Test update'
+    window.__GIT_COMMIT__ = 'abc123'
+    window.__GITHUB_URL__ = 'https://github.com/test/repo'
   })
 
   it('devrait afficher le message d\'installation', () => {

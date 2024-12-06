@@ -1,45 +1,25 @@
-import { onMessage } from 'webext-bridge'
-import type { ErrorDetails } from '@/errors'
-import { setupErrorHandlers } from '@/errors'
+import { onMessage } from 'webext-bridge/background'
+import type { ErrorDetails } from '../errors/types'
 
-// Configuration des gestionnaires d'erreurs
-setupErrorHandlers('background')
+// Gestionnaire de ping pour vérifier la connexion
+onMessage('ping', () => {
+  return { success: true }
+})
 
-chrome.runtime.onInstalled.addListener(async (opt) => {
-  if (opt.reason === 'install') {
-    await chrome.storage.local.clear()
-
-    chrome.tabs.create({
-      active: true,
-      url: chrome.runtime.getURL('src/setup/index.html?type=install'),
-    })
-  }
-
-  if (opt.reason === 'update') {
-    chrome.tabs.create({
-      active: true,
-      url: chrome.runtime.getURL('src/setup/index.html?type=update'),
-    })
+// Gestionnaire d'erreurs
+onMessage('error:report', async (message) => {
+  try {
+    const errorDetails = message.data as unknown as ErrorDetails
+    console.error(
+      `[${errorDetails.context || 'unknown'}] Error received:`,
+      errorDetails
+    )
+  } catch (e) {
+    console.error('Failed to process error:', e)
   }
 })
 
-// Écoute des erreurs rapportées par les autres parties de l'extension
-onMessage('error:report', async (payload) => {
-  const errorDetails = payload.data as ErrorDetails
-  
-  // Log l'erreur dans la console du background
-  console.error(
-    `[${errorDetails.context}] Error received:`,
-    errorDetails
-  )
-
-  // Ici, vous pourriez ajouter d'autres traitements :
-  // - Envoi à un service de monitoring
-  // - Notification à l'utilisateur pour les erreurs critiques
-  // - Analytics
-  // - etc.
-})
-
-console.log('hello world from background')
+console.log('Background script initialized')
 
 export {}
+

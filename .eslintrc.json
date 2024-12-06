@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended"
+  ],
+  "rules": {
+    "no-restricted-globals": ["error", "event", "name", "length", "parent", "location", "top"],
+    "@typescript-eslint/no-restricted-globals": "off"
+  }
+} 

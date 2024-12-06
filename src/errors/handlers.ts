@@ -1,74 +1,109 @@
-import { sendMessage } from 'webext-bridge'
+import { sendMessage } from 'webext-bridge/content-script'
 import type { ErrorDetails } from './types'
 import { storeError } from './storage'
 import { showErrorNotification } from './notifications'
 
+const isWindow = typeof window !== 'undefined'
+let isHandlingError = false
+
+// Vérifier si le background est disponible
+async function isBackgroundAvailable(): Promise<boolean> {
+  try {
+    return chrome.runtime?.id != null
+  } catch {
+    return false
+  }
+}
+
 export async function handleError(
   message: string | Event,
-  source?: string,
-  lineno?: number,
-  colno?: number,
-  error?: Error | null,
-  context: string = 'unknown'
-): Promise<void> {
-  const errorDetails: ErrorDetails = {
-    message: message instanceof Event ? message.toString() : message,
-    source: source || 'unknown',
-    lineno: lineno || 0,
-    colno: colno || 0,
-    error: error || null,
-    context,
-    timestamp: Date.now()
+  source: string | undefined,
+  lineno: number,
+  colno: number,
+  error: Error | null,
+  context: string
+): Promise<boolean> {
+  if (isHandlingError) {
+    return false
   }
 
-  // Afficher une notification d'erreur
-  showErrorNotification(`Une erreur est survenue: ${errorDetails.message}`)
-
-  // Log l'erreur dans la console
-  console.error(
-    `[${context}] Error: ${errorDetails.message}\n` +
-    `Source: ${errorDetails.source}\n` +
-    `Line: ${errorDetails.lineno}\n` +
-    `Column: ${errorDetails.colno}\n` +
-    `Error object: ${errorDetails.error}\n` +
-    `Timestamp: ${new Date(errorDetails.timestamp).toISOString()}`
-  )
+  isHandlingError = true
 
   try {
-    // Envoyer l'erreur au background script pour traitement
-    await sendMessage('error:report', errorDetails, 'background')
-  } catch (e) {
-    // En cas d'échec de l'envoi, log l'erreur localement
-    console.error('Failed to send error to background:', e)
-  }
+    const errorDetails: ErrorDetails = {
+      message: typeof message === 'string' ? message : message.type,
+      source: source || 'unknown',
+      lineno: lineno || 0,
+      colno: colno || 0,
+      error: error ? {
+        message: error.message,
+        name: error.name,
+        stack: error.stack
+      } : null,
+      context,
+      timestamp: Date.now()
+    }
 
-  // Stocker l'erreur
-  await storeError(errorDetails)
+    // Stocker l'erreur localement d'abord
+    await storeError(errorDetails)
+
+    // Log l'erreur dans la console
+    console.error(
+      `[${context}] Error: ${errorDetails.message}\n` +
+      `Source: ${errorDetails.source}\n` +
+      `Line: ${errorDetails.lineno}\n` +
+      `Column: ${errorDetails.colno}\n` +
+      `Error object: ${errorDetails.error}\n` +
+      `Timestamp: ${new Date(errorDetails.timestamp).toISOString()}`
+    )
+
+    // Afficher une notification si possible
+    if (isWindow) {
+      showErrorNotification(errorDetails)
+    }
+
+    // Vérifier si le background est disponible avant d'envoyer le message
+    if (await isBackgroundAvailable()) {
+      try {
+        await sendMessage('error:report', { data: errorDetails }, 'background')
+      } catch {
+        // Ignorer silencieusement les erreurs de communication
+      }
+    }
+
+    return false
+  } finally {
+    isHandlingError = false
+  }
 }
 
 export function setupErrorHandlers(context: string): void {
-  // Gestionnaire d'erreurs global
-  self.onerror = (message, source, lineno, colno, error) => {
-    handleError(message, source, lineno, colno, error, context)
-    return false // Permet à l'erreur de se propager
+  // Ne configurer les gestionnaires que dans un contexte window
+  if (!isWindow) {
+    return
   }
 
-  // Gestionnaire de rejets de promesses non gérés
-  self.onunhandledrejection = (event) => {
-    handleError(
-      event.reason?.message || 'Unhandled Promise Rejection',
-      event.reason?.stack,
-      0,
-      0,
-      event.reason,
+  // Gestionnaire d'erreurs global
+  window.onerror = (message, source, lineno, colno, error) => {
+    return handleError(
+      message || 'Unknown error',
+      source || 'unknown',
+      lineno || 0,
+      colno || 0,
+      error || null,
       context
     )
   }
 
-  // Gestionnaire d'erreurs Vue
-  if (typeof window !== 'undefined') {
-    window.addEventListener('error', (event) => {
-      handleError(event.message, event.filename, event.lineno, event.colno, event.error, context)
-    })
+  // Gestionnaire de rejets de promesses non gérés
+  window.onunhandledrejection = (event) => {
+    handleError(
+      event.reason?.message || 'Unhandled Promise Rejection',
+      event.reason?.stack || 'unknown',
+      0,
+      0,
+      event.reason || null,
+      context
+    )
   }
 } 

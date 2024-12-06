@@ -3,7 +3,12 @@ export interface ErrorDetails {
   source: string
   lineno: number
   colno: number
-  error: Error | null
+  error: null | {
+    message?: string
+    name?: string
+    stack?: string
+    [key: string]: unknown
+  }
   context?: string
   timestamp: number
 } 
