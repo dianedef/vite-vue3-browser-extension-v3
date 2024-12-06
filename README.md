@@ -1,18 +1,4 @@
-## Please take a moment to fill out our 3 question [Feedback Form](https://forms.gle/2nzS2AQkVGmqHTLV6) and let us know if you would be interested in purchasing template, along with any features you would like to see.
-
-We're developing a new and improved browser extension template with exciting features like authentication, payment processing, and more. Your feedback is crucial to us!
-Thank you for your time and support!
-
-**Note:** Your responses will help shape the future of this project and ensure we meet your needs better.
-
----
-
-# vite-vue3-browser-extension-v3
-
-[![build](https://github.com/mubaidr/vite-vue3-browser-extension-v3/actions/workflows/build.yml/badge.svg)](https://github.com/mubaidr/vite-vue3-browser-extension-v3/actions/workflows/build.yml) [![release](https://github.com/mubaidr/vite-vue3-browser-extension-v3/actions/workflows/release.yml/badge.svg)](https://github.com/mubaidr/vite-vue3-browser-extension-v3/actions/workflows/release.yml)
-
-A [Vite](https://vitejs.dev/) powered WebExtension ([Chrome](https://developer.chrome.com/docs/extensions/reference/), [FireFox](https://addons.mozilla.org/en-US/developers/), etc.) starter template based on `manifest 3`, `vue3` and `vite`.
-
+based on [vite-vue3-browser-extension-v3](https://github.com/mubaidr/vite-vue3-browser-extension-v3)
 
 ## Features
 
@@ -34,7 +20,11 @@ A [Vite](https://vitejs.dev/) powered WebExtension ([Chrome](https://developer.c
 - [CRXJS Vite Plugin](https://crxjs.dev/vite-plugin) Build Chrome, Firefox and Other Extensions with Vite
 - Github build and release actions
 
-_Please create an issue if you feel some feature is missing or could be improved._
+### Testing Libraries
+
+- [`Vitest`](https://vitest.dev/) - Framework de test unitaire compatible avec Vite
+- [`@testing-library/vue`](https://testing-library.com/docs/vue-testing-library/intro/) - Utilitaires de test pour Vue
+- [`chrome-mock`](https://github.com/acvetkov/chrome-mock) - Mocks modernes de l'API Chrome pour les tests
 
 ## Pre-packed
 
@@ -127,12 +117,6 @@ pnpm i
 
 _You can also use pnpm dev:chrome, pnpm dev:firefox, pnpm build:chrome, pnpm build:firefox, pnpm lint:fix_
 
-### Extra info
-
-In [src/background/index.ts](./src/background/index.ts) you can find an example of chrome.runtime.onInstalled.addListener.
-
-We add `?type` to the url to tell if it's update or install event. Then in [src/setup/pages/index.ts](./src/setup/pages/index.ts) we check for the `type` and show the appropriate page.
-
 ### Development
 
 ```bash
@@ -150,56 +134,3 @@ pnpm build
 ```
 
 And then pack files under `dist/chrome` or `dist/firefox`, you can upload to appropriate extension store.
-
-## Contributors
-
-<!-- readme: collaborators,contributors -start -->
-<table>
-	<tbody>
-		<tr>
-            <td align="center">
-                <a href="https://github.com/mubaidr">
-                    <img src="https://avatars.githubusercontent.com/u/2222702?v=4" width="100;" alt="mubaidr"/>
-                    <br />
-                    <sub><b>Muhammad Ubaid Raza</b></sub>
-                </a>
-            </td>
-            <td align="center">
-                <a href="https://github.com/baramofme">
-                    <img src="https://avatars.githubusercontent.com/u/44565599?v=4" width="100;" alt="baramofme"/>
-                    <br />
-                    <sub><b>Jihoon Yi</b></sub>
-                </a>
-            </td>
-            <td align="center">
-                <a href="https://github.com/poncianodiego">
-                    <img src="https://avatars.githubusercontent.com/u/20716004?v=4" width="100;" alt="poncianodiego"/>
-                    <br />
-                    <sub><b>Diego Ponciano</b></sub>
-                </a>
-            </td>
-            <td align="center">
-                <a href="https://github.com/IgorFZ">
-                    <img src="https://avatars.githubusercontent.com/u/85708187?v=4" width="100;" alt="IgorFZ"/>
-                    <br />
-                    <sub><b>igorfz</b></sub>
-                </a>
-            </td>
-            <td align="center">
-                <a href="https://github.com/hi2code">
-                    <img src="https://avatars.githubusercontent.com/u/51270649?v=4" width="100;" alt="hi2code"/>
-                    <br />
-                    <sub><b>hi2code</b></sub>
-                </a>
-            </td>
-            <td align="center">
-                <a href="https://github.com/justorez">
-                    <img src="https://avatars.githubusercontent.com/u/17308328?v=4" width="100;" alt="justorez"/>
-                    <br />
-                    <sub><b>Null</b></sub>
-                </a>
-            </td>
-		</tr>
-	<tbody>
-</table>
-<!-- readme: collaborators,contributors -end -->
