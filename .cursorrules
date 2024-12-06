@@ -53,3 +53,20 @@ Un système de ports pour la communication persistante
 Un typage fort des messages
 Une API unifiée qui fonctionne dans tous les contextes (background, content, popup)
 C'est en fait déjà un système de pub/sub intégré, similaire à un EventBus.
+
+
+
+J'ai créé :
+L'interface de base IFeature avec :
+Des types génériques pour les options
+Des métadonnées obligatoires (id, name, description, version)
+Des méthodes requises (execute, validate)
+Une classe abstraite BaseFeature qui :
+Implémente l'interface IFeature
+Fournit une validation de base des options
+Force l'implémentation de la méthode execute
+Des tests qui vérifient :
+La création correcte d'une feature
+La validation des options
+L'existence de la méthode execute
+Voulez-vous que je continue avec le prochain fichier ? Je suggère de créer feature-registry.ts ensuite, car il dépend directement de l'interface que nous venons de créer.
