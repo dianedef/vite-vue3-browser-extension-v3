@@ -1,18 +1,32 @@
+// Créer le mock avant les imports
+const mockShowErrorNotification = vi.fn()
+
+// Mock du module notifications
+vi.mock('../notifications', () => ({
+  showErrorNotification: mockShowErrorNotification,
+  setToastService: vi.fn()
+}))
+
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { createHandlersMock } from './mocks/handlers.mock'
-
-vi.mock('../handlers', () => {
-  return {
-    handleError: vi.fn(),
-    setupErrorHandlers: vi.fn()
-  }
-})
+import type { ToastInterface } from 'vue-toastification'
 
 describe('Error Handlers', () => {
   let handlersMock: ReturnType<typeof createHandlersMock>
+  let mockToast: ToastInterface
 
   beforeEach(() => {
     handlersMock = createHandlersMock()
+    vi.clearAllMocks()
+    
+    // Créer un mock du service toast
+    mockToast = {
+      error: vi.fn(),
+      success: vi.fn(),
+      warning: vi.fn(),
+      info: vi.fn(),
+      clear: vi.fn()
+    } as unknown as ToastInterface
     
     // Définir les propriétés avant de les mocker
     self.onerror = () => false
@@ -26,52 +40,65 @@ describe('Error Handlers', () => {
     // Nettoyer les propriétés après chaque test
     self.onerror = null
     self.onunhandledrejection = null
+    vi.clearAllMocks()
+    vi.resetModules()
   })
 
-  it('should handle errors correctly', () => {
-    const context = { someContext: 'test' }
-    const error = new Error('Test error')
-    const message = 'Test error message'
-    const source = 'test.js'
-    const lineno = 1
-    const colno = 1
+  describe('Error handling with mocks', () => {
+    it('should handle errors correctly and show notification', async () => {
+      const context = { someContext: 'test' }
+      const error = new Error('Test error')
+      const message = 'Test error message'
+      const source = 'test.js'
+      const lineno = 1
+      const colno = 1
 
-    handlersMock.mock.setupErrorHandlers(context)
-    self.onerror(message, source, lineno, colno, error)
+      const { handleError } = await import('../handlers')
+      await handleError(message, source, lineno, colno, error, context)
 
-    expect(handlersMock.spy).toHaveBeenCalledWith(
-      message,
-      source,
-      lineno,
-      colno,
-      error,
-      context
-    )
+      expect(mockShowErrorNotification).toHaveBeenCalledWith(
+        'Une erreur est survenue: Test error message'
+      )
+    })
+
+    it('should handle unhandled rejections and show notification', async () => {
+      const context = { someContext: 'test' }
+      const error = new Error('Test rejection')
+      
+      const { handleError } = await import('../handlers')
+      await handleError(
+        error.message,
+        error.stack,
+        0,
+        0,
+        error,
+        context
+      )
+
+      expect(mockShowErrorNotification).toHaveBeenCalledWith(
+        'Une erreur est survenue: Test rejection'
+      )
+    })
   })
 
-  it('should handle unhandled rejections', async () => {
-    const context = { someContext: 'test' }
-    const error = new Error('Test rejection')
-    const mockPromise = {
-      then: () => mockPromise,
-      catch: () => mockPromise
-    }
-    
-    handlersMock.mock.setupErrorHandlers(context)
-    self.onunhandledrejection({
-      type: 'unhandledrejection',
-      reason: error,
-      promise: mockPromise,
-      preventDefault: () => {}
-    } as PromiseRejectionEvent)
+  describe('Error handling with real implementation', () => {
+    it('should handle Vue errors and show notification', async () => {
+      const context = { someContext: 'test' }
+      const error = new Error('Vue error')
+      
+      const { handleError } = await import('../handlers')
+      await handleError(
+        'Vue error',
+        'vue-component.vue',
+        1,
+        1,
+        error,
+        context
+      )
 
-    expect(handlersMock.spy).toHaveBeenCalledWith(
-      error.message,
-      error.stack,
-      0,
-      0,
-      error,
-      context
-    )
+      expect(mockShowErrorNotification).toHaveBeenCalledWith(
+        'Une erreur est survenue: Vue error'
+      )
+    })
   })
 }) 

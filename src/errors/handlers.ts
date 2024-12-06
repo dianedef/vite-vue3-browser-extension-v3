@@ -1,6 +1,7 @@
 import { sendMessage } from 'webext-bridge'
 import type { ErrorDetails } from './types'
 import { storeError } from './storage'
+import { showErrorNotification } from './notifications'
 
 export async function handleError(
   message: string | Event,
@@ -19,6 +20,9 @@ export async function handleError(
     context,
     timestamp: Date.now()
   }
+
+  // Afficher une notification d'erreur
+  showErrorNotification(`Une erreur est survenue: ${errorDetails.message}`)
 
   // Log l'erreur dans la console
   console.error(
