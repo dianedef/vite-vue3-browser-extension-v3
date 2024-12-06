@@ -3,7 +3,6 @@ import { vi } from 'vitest'
 
 // Configuration globale pour Vue Test Utils
 config.global.mocks = {
-  // Mock des variables d'environnement
   __VERSION__: '1.0.0',
   __DISPLAY_NAME__: 'Test Extension',
   __CHANGELOG__: '# Changelog\n- Test update',
@@ -18,21 +17,25 @@ Object.defineProperty(window, 'self', {
 })
 
 // Mock de chrome.runtime
-const chrome = {
+const mockChrome = {
   runtime: {
     getManifest: vi.fn(() => ({
+      manifest_version: 3,
       version: '1.0.0',
       name: 'Test Extension'
     }))
   }
-}
+} as unknown as typeof chrome;
 
-// @ts-ignore
-global.chrome = chrome
+global.chrome = mockChrome;
 
 // Mock des variables d'environnement globalement
-global.__VERSION__ = '1.0.0'
-global.__DISPLAY_NAME__ = 'Test Extension'
-global.__CHANGELOG__ = '# Changelog\n- Test update'
-global.__GIT_COMMIT__ = 'abc123'
-global.__GITHUB_URL__ = 'https://github.com/test/repo'
+const globals = {
+  __VERSION__: '1.0.0',
+  __DISPLAY_NAME__: 'Test Extension',
+  __CHANGELOG__: '# Changelog\n- Test update',
+  __GIT_COMMIT__: 'abc123',
+  __GITHUB_URL__: 'https://github.com/test/repo'
+} as unknown as typeof globalThis;
+
+Object.assign(global, globals);
