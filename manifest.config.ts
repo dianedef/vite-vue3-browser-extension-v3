@@ -45,7 +45,9 @@ export default {
       resources: [
         'src/content-script/index.ts',
         'src/content-script/iframe/index.html',
-        'src/content-script/iframe/*'
+        'src/content-script/iframe/*',
+        'src/setup/index.html',
+        'src/setup/*'
       ]
     }
   ],
