@@ -52,9 +52,16 @@ export const useFeatureStore = defineStore('features', () => {
    * @returns Nouvel état de la feature (true = activée, false = désactivée)
    */
   const toggleFeature = async (featureId: string): Promise<boolean> => {
-    const newState = await settingsService.toggleFeature(featureId)
-    featureStates.value[featureId] = newState
-    return newState
+    const currentState = featureStates.value[featureId] || false
+    try {
+      const newState = await settingsService.toggleFeature(featureId)
+      featureStates.value[featureId] = newState
+      return newState
+    } catch (error) {
+      // En cas d'erreur, on garde l'état initial
+      featureStates.value[featureId] = currentState
+      throw error
+    }
   }
 
   /**
@@ -105,6 +112,10 @@ export const useFeatureStore = defineStore('features', () => {
     features,
     featureStates,
     featureOptions,
+    
+    // Services (exposés pour les tests)
+    registry,
+    settingsService,
     
     // Getters
     enabledFeatures,

@@ -6,6 +6,67 @@ useFeatureStore fait le lien avec l'UI
 Voulez-vous que je montre comment utiliser tout ça dans un composant Vue ?
 
 
+Pour lancer un test spécifique ou un fichier spécifique avec Vitest, il y a plusieurs options :
+
+1. **Pour lancer un fichier de test spécifique** :
+```bash
+pnpm vitest features.store.test.ts
+```
+
+2. **Pour lancer un test spécifique** (en utilisant le nom du test) :
+```bash
+pnpm vitest -t "should update enabledFeatures when toggling features"
+```
+
+3. **Pour lancer tous les tests d'une suite spécifique** (describe block) :
+```bash
+pnpm vitest -t "features store"
+```
+
+4. **Pour lancer en mode watch sur un fichier spécifique** :
+```bash
+pnpm vitest features.store.test.ts --watch
+```
+
+5. **Pour lancer avec un chemin complet** :
+```bash
+pnpm vitest src/stores/__tests__/features.store.test.ts
+```
+
+Je recommande d'utiliser l'option `--watch` pendant le développement car elle relancera automatiquement les tests quand vous modifiez le code.
+
+
+Voici les commandes exactes pour votre projet, en tenant compte de la structure de votre dossier :
+
+1. **Pour lancer uniquement le fichier de test du store** :
+```bash
+pnpm test src/stores/__tests__/features.store.test.ts
+```
+
+2. **Pour lancer un test spécifique** (par exemple le test de toggle) :
+```bash
+pnpm test -t "should update enabledFeatures when toggling features"
+```
+
+3. **Pour lancer en mode watch** (utile pendant le développement) :
+```bash
+pnpm test src/stores/__tests__/features.store.test.ts --watch
+```
+
+4. **Pour lancer tous les tests d'une suite** (par exemple tous les tests du store) :
+```bash
+pnpm test -t "features store"
+```
+
+Je recommande d'utiliser la commande avec `--watch` pendant que vous développez, car elle :
+- Relance automatiquement les tests quand vous modifiez le code
+- Affiche un menu interactif pour filtrer les tests
+- Permet de voir les résultats en temps réel
+
+Voulez-vous que je vous montre comment utiliser le mode watch de manière interactive ?
+
+
+
 
 Je vois que vous n'avez pas posé de question spécifique. Laissez-moi résumer l'architecture complète de notre projet avec tous les fichiers que nous avons créés :
 
