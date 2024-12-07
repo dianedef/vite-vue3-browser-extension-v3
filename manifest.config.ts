@@ -2,8 +2,7 @@ import { env } from 'node:process'
 import type { ManifestV3Export } from '@crxjs/vite-plugin'
 import packageJson from './package.json'
 
-const { version, name, description, displayName } = packageJson
-// Convert from Semver (example: 0.1.0-beta6)
+const { version, name } = packageJson
 const [major, minor, patch = '0'] = version
   // can only contain digits, dots, or dash
   .replace(/[^\d.-]+/g, '')
@@ -11,11 +10,12 @@ const [major, minor, patch = '0'] = version
   .split(/[.-]/)
 
 export default {
-  name: env.mode === 'staging' ? `[INTERNAL] ${name}` : displayName || name,
-  description,
+  name: env.mode === 'staging' ? `[INTERNAL] ${name}` : "__MSG_extensionName__",
+  description: "__MSG_extensionDescription__",
   version: `${major}.${minor}.${patch}`,
   version_name: version,
   manifest_version: 3,
+  default_locale: "fr",
   action: {
     default_popup: 'src/popup/index.html',
   },

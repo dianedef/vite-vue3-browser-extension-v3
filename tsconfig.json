@@ -6,7 +6,7 @@
     "useDefineForClassFields": true,
     "baseUrl": ".",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "paths": {
       "@/*": ["src/*"],
       "~pages": ["src/pages/index.ts"]
@@ -16,9 +16,9 @@
     "types": [
       "vitest",
       "vite/client",
-      "@vue/test-utils",
-      "@types/vue__test-utils",
-      "chrome"
+      "chrome",
+      "pinia",
+      "webextension-polyfill"
     ],
     "strict": true,
     "noEmit": true,

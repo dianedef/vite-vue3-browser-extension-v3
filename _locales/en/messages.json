@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "ToolFlowz",
+    "description": "Extension name"
+  },
+  "extensionDescription": {
+    "message": "Modern and versatile Chrome extension to enhance your productivity",
+    "description": "Extension description"
+  },
+  "settingsTitle": {
+    "message": "Settings",
+    "description": "Settings page title"
+  },
+  "featuresTitle": {
+    "message": "Features",
+    "description": "Features section title"
+  },
+  "enableFeature": {
+    "message": "Enable",
+    "description": "Button to enable a feature"
+  },
+  "disableFeature": {
+    "message": "Disable",
+    "description": "Button to disable a feature"
+  }
+} 

@@ -1,0 +1,26 @@
+{
+  "extensionName": {
+    "message": "ToolFlowz",
+    "description": "Nom de l'extension"
+  },
+  "extensionDescription": {
+    "message": "Extension Chrome moderne et versatile pour améliorer votre productivité",
+    "description": "Description de l'extension"
+  },
+  "settingsTitle": {
+    "message": "Paramètres",
+    "description": "Titre de la page des paramètres"
+  },
+  "featuresTitle": {
+    "message": "Fonctionnalités",
+    "description": "Titre de la section des fonctionnalités"
+  },
+  "enableFeature": {
+    "message": "Activer",
+    "description": "Bouton pour activer une fonctionnalité"
+  },
+  "disableFeature": {
+    "message": "Désactiver",
+    "description": "Bouton pour désactiver une fonctionnalité"
+  }
+} 

@@ -300,6 +300,7 @@
     "whenever": true,
     "handleError": true,
     "setupErrorHandlers": true,
-    "useFeatureStore": true
+    "useFeatureStore": true,
+    "useI18n": true
   }
 }
