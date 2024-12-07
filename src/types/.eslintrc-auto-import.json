@@ -299,6 +299,7 @@
     "watchWithFilter": true,
     "whenever": true,
     "handleError": true,
-    "setupErrorHandlers": true
+    "setupErrorHandlers": true,
+    "useFeatureStore": true
   }
 }

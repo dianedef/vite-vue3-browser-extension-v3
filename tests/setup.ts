@@ -1,5 +1,6 @@
 import { config } from '@vue/test-utils'
 import { vi } from 'vitest'
+import './mocks/webextension-polyfill'
 
 // Configuration globale pour Vue Test Utils
 config.global.mocks = {
