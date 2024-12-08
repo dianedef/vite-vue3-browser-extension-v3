@@ -37,12 +37,10 @@ locales.forEach(locale => {
 ```
 
 4. **Utilisation dans le manifest** :
-```typescript
 {
-  "name": "__MSG_extensionName__",  // Référence à la traduction
+  "name": "__MSG_extensionName__"  // Référence à la traduction
   "description": "__MSG_extensionDescription__"
 }
-```
 
 5. **Ordre de priorité** :
    - Les traductions de l'extension spécifique (`src/extensions/boilerplate/_locales/`)
@@ -58,10 +56,6 @@ Cette architecture permet :
 Super ! Je vois que vous avez déjà mis en place les traductions de base avec des clés communes qui pourront être utilisées par toutes les extensions (settings, features, etc.).
 
 Pour compléter, on pourrait ajouter les mêmes traductions en français. Je vais créer le fichier `_locales/fr/messages.json` :
-
-```:_locales/fr/messages.json
-
-```
 
 
 Maintenant, chaque extension peut :
