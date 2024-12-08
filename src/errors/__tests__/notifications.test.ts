@@ -1,6 +1,6 @@
 /// <reference types="chrome"/>
-import type { ToastInterface } from 'vue-toastification'
-import { afterEach, beforeAll, beforeEach, describe, expect, it,  vi } from 'vitest'
+import type { ToastServiceMethods } from 'primevue/toastservice'
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { MockInstance } from 'vitest'
 import { setToastService, showErrorNotification } from '../notifications'
 import type { ErrorDetails } from '../types'
@@ -29,19 +29,16 @@ beforeAll(() => {
 })
 
 describe('notification service', () => {
-  let mockToast: ToastInterface
+  let mockToast: ToastServiceMethods
   let consoleErrorSpy: MockInstance
-
 
   beforeEach(() => {
     // Créer un mock du service toast
     mockToast = {
-      error: vi.fn(),
-      success: vi.fn(),
-      warning: vi.fn(),
-      info: vi.fn(),
-      clear: vi.fn()
-    } as unknown as ToastInterface
+      add: vi.fn(),
+      removeGroup: vi.fn(),
+      removeAllGroups: vi.fn()
+    } as unknown as ToastServiceMethods
 
     // Espionner console.error
     consoleErrorSpy = vi.spyOn(console, 'error')
@@ -91,7 +88,7 @@ describe('notification service', () => {
     }
 
     showErrorNotification(errorDetails)
-    expect(mockToast.error).not.toHaveBeenCalled()
+    expect(mockToast.add).not.toHaveBeenCalled()
   })
 
   it('devrait afficher un toast avec le message d\'erreur', () => {
@@ -112,12 +109,14 @@ describe('notification service', () => {
     setToastService(mockToast)
     showErrorNotification(errorDetails)
 
-    expect(mockToast.error).toHaveBeenCalledWith(
-      'Une erreur est survenue: Test error',
+    expect(mockToast.add).toHaveBeenCalledWith(
       expect.objectContaining({
-        position: 'top-right',
-        timeout: 5000,
-        closeOnClick: true
+        severity: 'error',
+        summary: 'Erreur',
+        detail: 'Une erreur est survenue: Test error',
+        life: 5000,
+        closable: true,
+        group: 'error-notifications'
       })
     )
   })

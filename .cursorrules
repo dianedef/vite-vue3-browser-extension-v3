@@ -1,1 +1,2 @@
 $ $env:EXT='boilerplate'; pnpm run build:chrome
+$ $env:EXT='boilerplate'; pnpm run dev:chrome

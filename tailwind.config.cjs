@@ -8,9 +8,5 @@ module.exports = {
     'prettier-plugin-tailwindcss',
     require('@tailwindcss/typography'),
     require('@tailwindcss/forms'),
-    require('daisyui'),
   ],
-  daisyui: {
-    logs: false,
-  },
 }

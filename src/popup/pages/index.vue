@@ -14,10 +14,10 @@ const count = computed(() => store.count)
 </script>
 
 <template>
-  <div class="text-center m-4 flex flex-col gap-y-2">
+  <div class="text-center m-4 flex flex-col gap-y-2 min-h-[400px] min-w-[400px]">
     <h1 class="text-3xl font-bold underline pb-6">Hello world from Popup!</h1>
 
-    <p>Vesion: {{ version }}</p>
+    <p>Version: {{ version }}</p>
     <p>Display name: {{ displayName }}</p>
 
     <p>
@@ -44,22 +44,22 @@ const count = computed(() => store.count)
     <p>Count: {{ count }}</p>
 
     <div class="flex gap-x-2 justify-center">
-      <button
-        class="btn btn-primary"
+      <PButton
+        severity="primary"
         @click="store.increment"
       >
         Increment
-      </button>
-      <button
-        class="btn btn-primary"
+      </PButton>
+      <PButton
+        severity="secondary"
         @click="store.decrement"
       >
         Decrement
-      </button>
+      </PButton>
     </div>
 
     <RouterLink
-      class="underline"
+      class="underline text-blue-500 hover:text-blue-700"
       to="/common/about"
     >
       About
@@ -68,10 +68,6 @@ const count = computed(() => store.count)
 </template>
 
 <style scoped>
-.btn {
-  @apply px-4 py-2 rounded-md bg-blue-500 text-white;
-}
-
 .logo {
   height: 6em;
   padding: 1.5em;

@@ -1,10 +1,9 @@
-import type { ToastInterface } from 'vue-toastification'
-import { POSITION } from 'vue-toastification'
+import type { ToastServiceMethods } from 'primevue/toastservice'
 import type { ErrorDetails } from './types'
 
-let toastService: ToastInterface | null = null
+let toastService: ToastServiceMethods | null = null
 
-export function setToastService(toast: ToastInterface | null) {
+export function setToastService(toast: ToastServiceMethods | null) {
   toastService = toast
 }
 
@@ -21,19 +20,13 @@ export function showErrorNotification(errorDetails: ErrorDetails): void {
 
   // Afficher une notification si le service est disponible
   if (toastService && typeof window !== 'undefined') {
-    toastService.error(`Une erreur est survenue: ${errorDetails.message}`, {
-      position: POSITION.TOP_RIGHT,
-      timeout: 5000,
-      closeOnClick: true,
-      pauseOnFocusLoss: true,
-      pauseOnHover: true,
-      draggable: true,
-      draggablePercent: 0.6,
-      showCloseButtonOnHover: false,
-      hideProgressBar: true,
-      closeButton: 'button',
-      icon: true,
-      rtl: false
+    toastService.add({
+      severity: 'error',
+      summary: 'Erreur',
+      detail: `Une erreur est survenue: ${errorDetails.message}`,
+      life: 5000,
+      closable: true,
+      group: 'error-notifications'
     })
   }
 } 

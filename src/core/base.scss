@@ -1,5 +1,10 @@
+// PrimeVue styles (avant Tailwind pour éviter les conflits)
+@import 'primeicons/primeicons.css';
+
 // required for vue-devtools
 @import 'vite-plugin-vue-devtools/src/overlay/devtools-overlay.css';
+
+// Tailwind
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -39,10 +39,18 @@ const commitURL = `${gitURL}/commit/${gitCommit}`
 <style lang="scss" scoped>
 :deep(.changelog) {
   input[type='checkbox'] {
-    @apply checkbox checkbox-info disabled:opacity-100;
+    @apply w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-100;
   }
   table {
-    @apply table table-zebra;
+    @apply min-w-full divide-y divide-gray-200;
+    
+    tr:nth-child(odd) {
+      @apply bg-gray-50;
+    }
+    
+    tr:nth-child(even) {
+      @apply bg-white;
+    }
   }
 }
 </style>

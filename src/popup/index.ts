@@ -1,13 +1,17 @@
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router/auto'
-import Toast from 'vue-toastification'
-import 'vue-toastification/dist/index.css'
+import { useToast } from 'primevue/usetoast'
 import App from './app.vue'
 import routes from '~pages'
+
+// Styles
 import '@/core/base.scss'
 import './index.scss'
+
+import { setupPrimeVue } from '@/plugins/primevue'
 import { setToastService } from '@/errors/notifications'
+import { ChromeI18nService } from '@/core/i18n/service'
 
 routes.push({
   path: '/',
@@ -21,32 +25,16 @@ const router = createRouter({
 
 const app = createApp(App)
 
-// Configuration de Vue Toastification
-const toastOptions = {
-  position: 'top-right',
-  timeout: 5000,
-  closeOnClick: true,
-  pauseOnFocusLoss: true,
-  pauseOnHover: true,
-  draggable: true,
-  draggablePercent: 0.6,
-  showCloseButtonOnHover: false,
-  hideProgressBar: true,
-  closeButton: 'button',
-  icon: true,
-  rtl: false,
-  transition: 'Vue-Toastification__bounce',
-  maxToasts: 3,
-  newestOnTop: true
-}
+// Initialiser le service i18n
+const i18nService = new ChromeI18nService()
+app.provide('i18n', i18nService)
 
-app.use(router)
-   .use(createPinia())
-   .use(Toast, toastOptions)
-   .mount('#app')
+setupPrimeVue(app)
+app.use(router).use(createPinia()).mount('#app')
 
 // Initialiser le service de notification
-setToastService(app.config.globalProperties.$toast)
+const toast = useToast()
+setToastService(toast)
 
 console.log(router.getRoutes())
 

@@ -17,10 +17,10 @@ const extensionName = env.EXT || 'boilerplate'
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    port: 5173,
+    port: 3333,
     strictPort: true,
     hmr: {
-      port: 5173,
+      port: 3333,
     },
   },
   resolve: {
@@ -30,6 +30,8 @@ export default defineConfig({
       src: fileURLToPath(new URL('./src', import.meta.url)),
       '@ext': fileURLToPath(new URL(`./src/extensions/${extensionName}`, import.meta.url)),
       '@assets': fileURLToPath(new URL(`./src/extensions/${extensionName}/assets`, import.meta.url)),
+      '/primevue/': fileURLToPath(new URL('./node_modules/primevue/', import.meta.url)),
+      '/primeicons/': fileURLToPath(new URL('./node_modules/primeicons/', import.meta.url))
     },
   },
   css: {
@@ -38,6 +40,7 @@ export default defineConfig({
         api: 'modern',
       },
     },
+    devSourcemap: true,
   },
   plugins: [
     vue(),
@@ -84,24 +87,19 @@ export default defineConfig({
       },
     }),
 
-    // https://github.com/antfu/unplugin-vue-components
     Components({
       dirs: ['src/components'],
-      // generate `components.d.ts` for ts support with Volar
       dts: 'src/types/components.d.ts',
       resolvers: [
-        // auto import icons
         IconsResolver(),
       ],
     }),
 
-    // https://github.com/antfu/unplugin-icons
     Icons({
       autoInstall: true,
       compiler: 'vue3',
       scale: 1.5,
     }),
-    // rewrite assets to use relative path
     {
       name: 'assets-rewrite',
       enforce: 'post',
@@ -122,13 +120,22 @@ export default defineConfig({
         popup: 'src/popup/index.html',
         setup: 'src/setup/index.html',
         options: 'src/options/index.html',
-      },
+      }
     },
     emptyOutDir: false,
     outDir: `dist/${extensionName}`,
   },
   optimizeDeps: {
-    include: ['vue', '@vueuse/core', 'webextension-polyfill'],
+    include: [
+      'vue',
+      '@vueuse/core',
+      'webextension-polyfill',
+      'primevue/config',
+      'primevue/button',
+      'primevue/inputtext',
+      'primevue/toast',
+      'primevue/toastservice'
+    ],
     exclude: ['vue-demi'],
   },
   assetsInclude: ['src/assets/*/**'],
