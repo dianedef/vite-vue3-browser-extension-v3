@@ -81,8 +81,8 @@ export class SettingsService implements ISettingsService {
    */
   private async getSettings(): Promise<IFeatureSettings> {
     const data = await browser.storage.local.get(SettingsService.STORAGE_KEY)
-    const emptySettings: IFeatureSettings = {}
-    return data[SettingsService.STORAGE_KEY] || Object.create(null) as IFeatureSettings
+    const defaultSettings: IFeatureSettings = Object.create(null)
+    return data[SettingsService.STORAGE_KEY] || defaultSettings
   }
 
   /**

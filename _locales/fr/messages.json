@@ -1,26 +1,86 @@
 {
   "extensionName": {
-    "message": "Générateur d'Extensions Web",
-    "description": "Nom de l'extension"
+    "message": "Extension Boilerplate"
   },
   "extensionDescription": {
-    "message": "Un projet Vue 3 + Vite pour créer des extensions Chrome et Firefox",
-    "description": "Description de l'extension"
+    "message": "Un template d'extension Chrome moderne et flexible"
   },
-  "settingsTitle": {
-    "message": "Paramètres",
-    "description": "Titre de la page des paramètres"
+  "settings_title": {
+    "message": "Paramètres"
   },
-  "featuresTitle": {
-    "message": "Fonctionnalités",
-    "description": "Titre de la section des fonctionnalités"
+  "settings_description": {
+    "message": "Configurez les paramètres de l'extension"
   },
-  "enableFeature": {
-    "message": "Activer",
-    "description": "Bouton pour activer une fonctionnalité"
+  "settings_footer": {
+    "message": "Extension ToolFlowz"
   },
-  "disableFeature": {
-    "message": "Désactiver",
-    "description": "Bouton pour désactiver une fonctionnalité"
+  "settings_saveSuccess": {
+    "message": "Paramètres sauvegardés"
+  },
+  "settings_saveSuccessDetail": {
+    "message": "Vos préférences ont été enregistrées avec succès"
+  },
+  "settings_saveError": {
+    "message": "Erreur"
+  },
+  "settings_saveErrorDetail": {
+    "message": "Une erreur est survenue lors de la sauvegarde"
+  },
+  "settings_notifications_title": {
+    "message": "Notifications"
+  },
+  "settings_notifications_enable": {
+    "message": "Activer les notifications"
+  },
+  "settings_notifications_enableDescription": {
+    "message": "Recevoir des notifications de l'extension"
+  },
+  "settings_notifications_sound": {
+    "message": "Son des notifications"
+  },
+  "settings_notifications_soundDescription": {
+    "message": "Jouer un son lors des notifications"
+  },
+  "settings_theme_title": {
+    "message": "Thème"
+  },
+  "settings_theme_darkMode": {
+    "message": "Mode sombre"
+  },
+  "settings_theme_darkModeDescription": {
+    "message": "Utiliser le thème sombre"
+  },
+  "settings_language_title": {
+    "message": "Langue"
+  },
+  "settings_language_select": {
+    "message": "Sélectionner la langue"
+  },
+  "settings_language_selectDescription": {
+    "message": "Choisir la langue de l'interface"
+  },
+  "common_save": {
+    "message": "Enregistrer"
+  },
+  "common_cancel": {
+    "message": "Annuler"
+  },
+  "feature_notifications_name": {
+    "message": "Notifications"
+  },
+  "feature_notifications_description": {
+    "message": "Gère les notifications Toast de l'interface"
+  },
+  "feature_name": {
+    "message": "Fonctionnalité"
+  },
+  "feature_description": {
+    "message": "Description"
+  },
+  "feature_version": {
+    "message": "Version"
+  },
+  "feature_status": {
+    "message": "État"
   }
 } 

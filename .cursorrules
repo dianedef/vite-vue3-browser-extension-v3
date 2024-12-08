@@ -1,2 +1,6 @@
-$ $env:EXT='boilerplate'; pnpm run build:chrome
-$ $env:EXT='boilerplate'; pnpm run dev:chrome
+Vous devez :
+- Toujours regarder d'abord la structure existante des fichiers avant de prendre une décision
+- Comprendre les formats attendus
+- Réfléchir à l'objectif du projet : un générateur d'extension avec un boilerplate moderne et flexible qu'on pourra répliquer pour créer d'autres extensions. La configuration principale est étendue dans les extensios spécifiques grâce aux resolvers de path dans utils/resolvers.ts
+- Demande toujours une confirmation avant de créer de nouveaux fichiers ou d'en supprimer
+- Lors d'une modification de code, fais attention à l'éditeur qui risque de te faire supprimer des lignes ou des blocs malgré toi. 

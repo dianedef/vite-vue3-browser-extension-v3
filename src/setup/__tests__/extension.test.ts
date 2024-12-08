@@ -1,13 +1,15 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router/auto'
-import { sendMessage, onMessage } from 'webext-bridge'
-import type { Target } from 'webext-bridge'
+import { onMessage, sendMessage } from 'webext-bridge/background'
+import type Target from 'webext-bridge'
 import browser from 'webextension-polyfill'
 import App from '../app.vue'
 import routes from '~pages'
 
-vi.mock('webext-bridge', () => ({
+type BridgeTarget = 'background' | 'content-script' | 'popup' | 'options'
+
+vi.mock('webext-bridge/background', () => ({
   sendMessage: vi.fn(),
   onMessage: vi.fn()
 }))
@@ -72,13 +74,13 @@ describe('extension setup', () => {
     const lineno = 1
     const colno = 1
 
-    self.onerror = function (message, source, lineno, colno, error) {
+    globalThis.onerror = function (message, source, lineno, colno, error) {
       console.info(
         `Error: ${message}\nSource: ${source}\nLine: ${lineno}\nColumn: ${colno}\nError object: ${error}`
       )
     }
 
-    self.onerror('Test error', source, lineno, colno, error)
+    globalThis.onerror('Test error', source, lineno, colno, error)
 
     expect(consoleInfoSpy).toHaveBeenCalledWith(
       `Error: Test error\nSource: ${source}\nLine: ${lineno}\nColumn: ${colno}\nError object: ${error}`
@@ -103,7 +105,7 @@ describe('extension setup', () => {
       
       // Simuler une erreur
       const mockError = { error: 'Communication failed' }
-      await sendMessage('setup:error', mockError, 'background' as Target)
+      await sendMessage('setup:error', mockError, 'background' as BridgeTarget)
       
       expect(onMessage).toHaveBeenCalledWith('setup:error', expect.any(Function))
       expect(sendMessage).toHaveBeenCalledWith('setup:error', mockError, 'background')
@@ -115,8 +117,7 @@ describe('extension setup', () => {
       const timeoutPromise = sendMessage(
         'setup:install', 
         { version: '1.0.0' }, 
-        'background' as Target, 
-        { timeout: 1000 }
+        'background' as BridgeTarget
       )
       
       await expect(timeoutPromise).rejects.toThrow('Message timeout')

@@ -1,4 +1,4 @@
-import type { IFeature, IFeatureOptions } from './features/base.feature'
+import type { IFeature, IFeatureOptions } from './base.feature'
 
 export interface IFeatureRegistry {
   readonly features: Map<string, IFeature<IFeatureOptions>>

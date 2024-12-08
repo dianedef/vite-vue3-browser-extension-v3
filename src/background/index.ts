@@ -1,9 +1,34 @@
 import { onMessage } from 'webext-bridge/background'
+import { createPinia } from 'pinia'
 import type { ErrorDetails } from '../errors/types'
+import { NotificationsFeature } from '@/core/features/notifications.feature'
+import { useFeatureStore } from '@/stores/features.store'
+
+// Initialisation de Pinia pour le background
+const pinia = createPinia()
+
+// Initialisation du store avec l'instance Pinia
+const featureStore = useFeatureStore(pinia)
+featureStore.registry.register(new NotificationsFeature())
+featureStore.initializeFeatures().catch(error => {
+  console.error('Failed to initialize features:', error)
+})
 
 // Gestionnaire de ping pour vérifier la connexion
 onMessage('ping', () => {
   return { success: true }
+})
+
+// Gestionnaire pour les features
+onMessage('feature:execute', async (message) => {
+  const { featureId, options } = message.data as { featureId: string, options: any }
+  try {
+    await featureStore.executeFeature(featureId, options)
+    return { success: true }
+  } catch (error) {
+    console.error(`Failed to execute feature ${featureId}:`, error)
+    return { success: false, error }
+  }
 })
 
 // Gestionnaire d'erreurs
@@ -42,8 +67,6 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     })
   }
 })
-
-console.log('Background script initialized')
 
 export {}
 

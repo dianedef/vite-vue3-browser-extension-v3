@@ -1,26 +1,86 @@
 {
   "extensionName": {
-    "message": "Web Extension Generator",
-    "description": "Extension name"
+    "message": "Boilerplate Extension"
   },
   "extensionDescription": {
-    "message": "A Vue 3 + Vite project for building Chrome and Firefox extensions",
-    "description": "Extension description"
+    "message": "A modern and flexible Chrome extension template"
   },
-  "settingsTitle": {
-    "message": "Settings",
-    "description": "Settings page title"
+  "settings_title": {
+    "message": "Settings"
   },
-  "featuresTitle": {
-    "message": "Features",
-    "description": "Features section title"
+  "settings_description": {
+    "message": "Configure extension settings"
   },
-  "enableFeature": {
-    "message": "Enable",
-    "description": "Button to enable a feature"
+  "settings_footer": {
+    "message": "ToolFlowz Extension"
   },
-  "disableFeature": {
-    "message": "Disable",
-    "description": "Button to disable a feature"
+  "settings_saveSuccess": {
+    "message": "Settings saved"
+  },
+  "settings_saveSuccessDetail": {
+    "message": "Your preferences have been saved successfully"
+  },
+  "settings_saveError": {
+    "message": "Error"
+  },
+  "settings_saveErrorDetail": {
+    "message": "An error occurred while saving"
+  },
+  "settings_notifications_title": {
+    "message": "Notifications"
+  },
+  "settings_notifications_enable": {
+    "message": "Enable notifications"
+  },
+  "settings_notifications_enableDescription": {
+    "message": "Receive notifications from the extension"
+  },
+  "settings_notifications_sound": {
+    "message": "Notification sound"
+  },
+  "settings_notifications_soundDescription": {
+    "message": "Play a sound when notifications appear"
+  },
+  "settings_theme_title": {
+    "message": "Theme"
+  },
+  "settings_theme_darkMode": {
+    "message": "Dark mode"
+  },
+  "settings_theme_darkModeDescription": {
+    "message": "Use dark theme"
+  },
+  "settings_language_title": {
+    "message": "Language"
+  },
+  "settings_language_select": {
+    "message": "Select language"
+  },
+  "settings_language_selectDescription": {
+    "message": "Choose interface language"
+  },
+  "common_save": {
+    "message": "Save"
+  },
+  "common_cancel": {
+    "message": "Cancel"
+  },
+  "feature_notifications_name": {
+    "message": "Notifications"
+  },
+  "feature_notifications_description": {
+    "message": "Manages Toast notifications in the interface"
+  },
+  "feature_name": {
+    "message": "Feature"
+  },
+  "feature_description": {
+    "message": "Description"
+  },
+  "feature_version": {
+    "message": "Version"
+  },
+  "feature_status": {
+    "message": "Status"
   }
 } 

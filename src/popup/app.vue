@@ -1,7 +1,15 @@
 <script setup lang="ts">
 import { useI18n } from '@/composables/useI18n'
+import { useToast } from 'primevue/usetoast'
+import { onMounted } from 'vue'
+import { setToastService } from '@/errors/notifications'
 
 const { t } = useI18n()
+const toast = useToast()
+
+onMounted(() => {
+  setToastService(toast)
+})
 </script>
 
 <template>

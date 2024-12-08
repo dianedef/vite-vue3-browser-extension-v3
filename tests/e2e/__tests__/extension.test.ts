@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { i18nPlugin } from '@/core/i18n'
+import { i18n } from '@/core/i18n'
 import { useI18n } from '@/composables/useI18n'
 import browser from 'webextension-polyfill'
 import { nextTick, ref } from 'vue'
+import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
 
 // Mock de l'API browser/chrome
 vi.mock('webextension-polyfill', () => ({
@@ -34,17 +36,17 @@ describe('extension e2e', () => {
   })
 
   it('should display correct translations in components', async () => {
-    // Mock des traductions
-    vi.mocked(browser.i18n.getMessage).mockImplementation((key) => {
-      const translations = {
-        extensionName: 'Extension Test',
-        settingsTitle: 'Paramètres',
-        featuresTitle: 'Fonctionnalités'
-      }
+    // Mock des traductions avec typage
+    const translations: Record<string, string> = {
+      extensionName: 'Extension Test',
+      settingsTitle: 'Paramètres',
+      featuresTitle: 'Fonctionnalités'
+    }
+
+    vi.mocked(browser.i18n.getMessage).mockImplementation((key: string) => {
       return translations[key] || key
     })
 
-    // Test du composable useI18n
     const wrapper = mount({
       template: `
         <div>
@@ -59,7 +61,7 @@ describe('extension e2e', () => {
       }
     }, {
       global: {
-        plugins: [i18nPlugin, router]
+        plugins: [i18n, router]
       }
     })
 
@@ -82,7 +84,7 @@ describe('extension e2e', () => {
       }
     }, {
       global: {
-        plugins: [i18nPlugin, router]
+        plugins: [i18n, router]
       }
     })
 
@@ -115,7 +117,7 @@ describe('extension e2e', () => {
       }
     }, {
       global: {
-        plugins: [i18nPlugin, router]
+        plugins: [i18n, router]
       }
     })
 
@@ -136,7 +138,7 @@ describe('extension e2e', () => {
   it('should integrate with extension popup', async () => {
     // Mock des traductions pour le popup
     vi.mocked(browser.i18n.getMessage).mockImplementation((key) => {
-      const translations = {
+      const translations: Record<string, string> = {
         extensionName: 'Extension Test',
         settingsTitle: 'Paramètres'
       }
@@ -147,7 +149,12 @@ describe('extension e2e', () => {
     const { default: Popup } = await import('@/popup/app.vue')
     const wrapper = mount(Popup, {
       global: {
-        plugins: [i18nPlugin, router],
+        plugins: [
+          i18n, 
+          router,
+          PrimeVue,
+          ToastService
+        ],
         stubs: {
           'RouterView': true
         }

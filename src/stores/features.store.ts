@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import type { IFeature, IFeatureOptions } from '@/core/features/base.feature'
-import { FeatureRegistry } from '@/core/feature-registry'
+import { FeatureRegistry } from '@/core/features/feature-registry'
 import { type IFeatureState, SettingsService } from '@/core/settings/settings.service'
+
 
 /**
  * Store Pinia gérant l'état et les interactions avec les features

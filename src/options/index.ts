@@ -1,10 +1,31 @@
-import { createPinia } from 'pinia'
 import { createApp } from 'vue'
-import { createRouter, createWebHashHistory } from 'vue-router/auto'
-import App from './app.vue'
-import routes from '~pages'
+import { createPinia } from 'pinia'
 import '@/core/base.scss'
 import './index.scss'
+import '@primevue/themes/lara'
+import '@/styles/primevue.css'
+import { createRouter, createWebHashHistory } from 'vue-router/auto'
+import PrimeVue from 'primevue/config'
+import ToastService from 'primevue/toastservice'
+import ToggleButton from 'primevue/togglebutton'
+import Toast from 'primevue/toast'
+import Card from 'primevue/card'
+import InputSwitch from 'primevue/inputswitch'
+import PanelMenu from 'primevue/panelmenu'
+import ProgressSpinner from 'primevue/progressspinner'
+import App from './app.vue'
+import routes from '~pages'
+import { i18n } from '@/core/i18n/plugin'
+import { NotificationsFeature } from '@/core/features/notifications.feature'
+import { useFeatureStore } from '@/stores/features.store'
+
+const app = createApp(App)
+const pinia = createPinia()
+app.use(pinia)
+
+// Initialisation des features
+const featureStore = useFeatureStore()
+featureStore.registry.register(new NotificationsFeature())
 
 routes.push({
   path: '/',
@@ -16,12 +37,18 @@ const router = createRouter({
   routes,
 })
 
-createApp(App).use(router).use(createPinia()).mount('#app')
+// Configuration de l'application
+app.use(PrimeVue)
+app.use(ToastService)
+app.use(i18n)
+app.use(router)
 
-// console.log(router.getRoutes())
+// Composants PrimeVue globaux
+app.component('PToast', Toast)
+app.component('PCard', Card)
+app.component('PInputSwitch', InputSwitch)
+app.component('PPanelMenu', PanelMenu)
+app.component('PProgressSpinner', ProgressSpinner)
+app.component('PToggleButton', ToggleButton)
+app.mount('#app')
 
-self.onerror = function (message, source, lineno, colno, error) {
-  console.info(
-    `Error: ${message}\nSource: ${source}\nLine: ${lineno}\nColumn: ${colno}\nError object: ${error}`
-  )
-}

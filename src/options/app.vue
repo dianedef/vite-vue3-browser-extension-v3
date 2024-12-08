@@ -1,29 +1,43 @@
 <script setup lang="ts">
-import { useAppStore } from '@/stores/app.store'
+import { onMounted } from 'vue'
+import { useToast } from 'primevue/usetoast'
+import { useFeatureStore } from '@/stores/features.store'
+import { useI18n } from '@/composables/useI18n'
+import FeaturesList from '@/components/FeaturesList.vue'
+import Card from 'primevue/card'
 
-const store = useAppStore()
+const featureStore = useFeatureStore()
+const { t } = useI18n()
+const toast = useToast()
 
-const count = computed(() => store.count)
+onMounted(async () => {
+  try { 
+    await featureStore.initializeFeatures()
+  } catch (error) {
+    console.error('Error loading features:', error)
+    toast.add({
+      severity: 'error',
+      summary: t('settings_loadError'),
+      detail: t('settings_loadErrorDetail'),
+      life: 5000
+    })
+  }
+})
 </script>
 
 <template>
-  <header
-    aria-label="Site Header"
-    class="bg-gray-50"
-  >
-    Options Header
-  </header>
-
-  <RouterView />
-
-  <p>Count: {{ count }}</p>
-
-  <footer
-    aria-label="Site Footer"
-    class="bg-gray-50"
-  >
-    Options Footer
-  </footer>
+  <div>
+    <Toast />
+    
+    <Card>
+      <template #title>
+        {{ t('settings_title') }}
+      </template>
+      
+      <template #content>
+        <FeaturesList />
+      </template>
+    </Card>
+  </div>
 </template>
 
-<style scoped></style>

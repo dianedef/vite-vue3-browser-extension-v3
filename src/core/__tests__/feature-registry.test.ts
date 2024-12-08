@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { BaseFeature, type IFeatureMetadata, type IFeatureOptions } from '../features/base.feature'
-import { FeatureRegistry } from '../feature-registry'
+import { FeatureRegistry } from '../features/feature-registry'
 
 interface TestFeatureOptions extends IFeatureOptions {
   testOption: string

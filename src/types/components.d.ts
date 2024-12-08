@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     Changelog: typeof import('./../components/Changelog.vue')['default']
     ExampleToast: typeof import('./../components/ExampleToast.vue')['default']
+    FeaturesList: typeof import('./../components/FeaturesList.vue')['default']
     IFaSolidDiceFive: typeof import('~icons/fa-solid/dice-five')['default']
     'IHeroiconsOutline:menuAlt2': typeof import('~icons/heroicons-outline/menu-alt2')['default']
     IHeroiconsOutlineMenuAlt2: typeof import('~icons/heroicons-outline/menu-alt2')['default']

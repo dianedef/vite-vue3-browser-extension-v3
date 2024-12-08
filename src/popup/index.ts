@@ -1,7 +1,6 @@
 import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router/auto'
-import { useToast } from 'primevue/usetoast'
 import App from './app.vue'
 import routes from '~pages'
 
@@ -31,10 +30,6 @@ app.provide('i18n', i18nService)
 
 setupPrimeVue(app)
 app.use(router).use(createPinia()).mount('#app')
-
-// Initialiser le service de notification
-const toast = useToast()
-setToastService(toast)
 
 console.log(router.getRoutes())
 

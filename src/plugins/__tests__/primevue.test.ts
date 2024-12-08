@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createApp, type App } from 'vue'
-import { setupPrimeVue } from '../primevue'
+import { type App, createApp } from 'vue'
 import PrimeVue from 'primevue/config'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Toast from 'primevue/toast'
 import ToastService from 'primevue/toastservice'
+import { setupPrimeVue } from '../primevue'
 
 // Mock des composants et services PrimeVue
 vi.mock('primevue/config', () => ({
@@ -30,12 +30,11 @@ vi.mock('primevue/toastservice', () => ({
 
 vi.mock('@primevue/themes/lara', () => ({}))
 
-describe('PrimeVue Setup', () => {
+describe('primevue setup', () => {
   let app: App
 
   beforeEach(() => {
     app = createApp({})
-    // Mock des méthodes de l'app Vue
     app.use = vi.fn().mockReturnThis()
     app.component = vi.fn().mockReturnThis()
   })
@@ -60,7 +59,7 @@ describe('PrimeVue Setup', () => {
 
     expect(app.component).toHaveBeenCalledWith('PButton', Button)
     expect(app.component).toHaveBeenCalledWith('PInputText', InputText)
-    expect(app.component).toHaveBeenCalledWith('Toast', Toast)
+    expect(app.component).toHaveBeenCalledWith('PToast', Toast)
   })
 
   it('devrait charger le thème Lara', () => {
