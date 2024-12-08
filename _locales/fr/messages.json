@@ -1,10 +1,10 @@
 {
   "extensionName": {
-    "message": "ToolFlowz",
+    "message": "Générateur d'Extensions Web",
     "description": "Nom de l'extension"
   },
   "extensionDescription": {
-    "message": "Extension Chrome moderne et versatile pour améliorer votre productivité",
+    "message": "Un projet Vue 3 + Vite pour créer des extensions Chrome et Firefox",
     "description": "Description de l'extension"
   },
   "settingsTitle": {

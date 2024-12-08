@@ -9,30 +9,27 @@
     "moduleResolution": "bundler",
     "paths": {
       "@/*": ["src/*"],
-      "~pages": ["src/pages/index.ts"]
+      "~/*": ["src/*"],
+      "src/*": ["src/*"]
     },
     "resolveJsonModule": true,
-    "typeRoots": ["./src/types", "./node_modules/@types"],
     "types": [
-      "vitest",
-      "vite/client",
       "chrome",
-      "pinia",
-      "webextension-polyfill"
+      "webextension-polyfill",
+      "vite/client",
+      "vitest/globals"
     ],
+    "allowJs": true,
     "strict": true,
-    "noEmit": true,
     "esModuleInterop": true,
     "isolatedModules": true,
     "skipLibCheck": true
   },
-  "references": [{ "path": "./tsconfig.node.json" }],
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "tests/**/*.ts",
-    "src/types/**/*.d.ts"
+    "tests/**/*.ts"
   ]
 }

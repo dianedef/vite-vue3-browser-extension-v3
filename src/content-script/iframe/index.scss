@@ -1,5 +1,5 @@
 // @config "./tailwind.config.cjs"; // To isolate the styles of the source website and chrome plugin
-@use '../../assets/base';
+@use '@/core/base';
 
 .body {
   @apply w-full h-full;

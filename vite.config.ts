@@ -1,5 +1,6 @@
 import { dirname, relative } from 'node:path'
 import { fileURLToPath, URL } from 'node:url'
+import { env } from 'node:process'
 import vue from '@vitejs/plugin-vue'
 import AutoImport from 'unplugin-auto-import/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -9,6 +10,9 @@ import { defineConfig } from 'vite'
 import Pages from 'vite-plugin-pages'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { defineViteConfig as define } from './define.config'
+
+// Récupération du nom de l'extension depuis les arguments
+const extensionName = env.EXT || 'boilerplate'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -24,7 +28,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
       '~': fileURLToPath(new URL('./src', import.meta.url)),
       src: fileURLToPath(new URL('./src', import.meta.url)),
-      '@assets': fileURLToPath(new URL('src/assets', import.meta.url)),
+      '@ext': fileURLToPath(new URL(`./src/extensions/${extensionName}`, import.meta.url)),
+      '@assets': fileURLToPath(new URL(`./src/extensions/${extensionName}/assets`, import.meta.url)),
     },
   },
   css: {
@@ -119,6 +124,8 @@ export default defineConfig({
         options: 'src/options/index.html',
       },
     },
+    emptyOutDir: false,
+    outDir: `dist/${extensionName}`,
   },
   optimizeDeps: {
     include: ['vue', '@vueuse/core', 'webextension-polyfill'],

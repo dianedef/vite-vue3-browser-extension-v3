@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createRouter, createWebHashHistory } from 'vue-router/auto'
 import App from './app.vue'
 import routes from '~pages'
-import '@/assets/base.scss'
+import '@/core/base.scss'
 import './index.scss'
 import { setupErrorHandlers } from '@/utils'
 

@@ -5,7 +5,7 @@ import Toast from 'vue-toastification'
 import 'vue-toastification/dist/index.css'
 import App from './app.vue'
 import routes from '~pages'
-import '@/assets/base.scss'
+import '@/core/base.scss'
 import './index.scss'
 import { setToastService } from '@/errors/notifications'
 

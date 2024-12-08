@@ -301,6 +301,9 @@
     "handleError": true,
     "setupErrorHandlers": true,
     "useFeatureStore": true,
-    "useI18n": true
+    "useI18n": true,
+    "resolveManifestPaths": true,
+    "resolvePath": true,
+    "resolveMessages": true
   }
 }

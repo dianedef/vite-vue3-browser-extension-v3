@@ -100,6 +100,95 @@ pnpm i
   - `chrome` - Chrome extension, can be publishd to Opera, Edge and toher chromium based browsers store etc
   - `firefox` - Firefox extension
 
+### Développement d'Extensions
+
+Le projet supporte le développement d'extensions multiples. Chaque extension est située dans le dossier `src/extensions/` avec sa propre structure :
+
+```bash
+src/extensions/
+  ├── mon-extension/
+  │   ├── manifest.config.ts    # Configuration du manifest
+  │   ├── features/            # Fonctionnalités de l'extension
+  │   ├── _locales/           # Fichiers de traduction
+  │   └── index.ts            # Point d'entrée
+```
+
+Pour développer ou construire une extension spécifique, utilisez l'argument `--ext` :
+
+```bash
+# Développement
+pnpm dev:chrome --ext=mon-extension
+pnpm dev:firefox --ext=mon-extension
+
+# Production
+pnpm build:chrome --ext=mon-extension
+pnpm build:firefox --ext=mon-extension
+```
+
+Si aucune extension n'est spécifiée, l'extension 'boilerplate' sera utilisée par défaut.
+
+### Implémentation Technique
+
+La gestion des extensions multiples repose sur trois composants principaux :
+
+#### 1. Configuration Vite
+```typescript
+// vite.config.ts - Configuration de base partagée
+import { defineConfig } from 'vite'
+// ... configuration de base pour tous les builds ...
+
+// vite.chrome.config.ts - Configuration spécifique Chrome + gestion des extensions
+
+// Récupération du nom de l'extension depuis les arguments
+const extensionName = process.env.EXT || 'boilerplate'
+
+// Import dynamique du manifest de l'extension
+const manifest = await import(`./src/extensions/${extensionName}/manifest.config.ts`)
+
+export default defineConfig({
+  ...baseConfig,  // Réutilisation de la config de base
+  build: {
+    ...baseConfig.build,
+    outDir: `dist/chrome/${extensionName}`
+  },
+  plugins: [
+    ...baseConfig.plugins || [],
+    crx({ 
+      manifest: manifest.default,
+      browser: 'chrome'
+    })
+  ]
+})
+```
+
+Cette architecture en cascade permet de :
+- Centraliser les configurations communes dans `vite.config.ts`
+- Spécialiser les builds par navigateur dans `vite.chrome.config.ts` et `vite.firefox.config.ts`
+- Gérer dynamiquement les extensions via les variables d'environnement
+
+#### 2. Scripts package.json
+```json
+{
+  "scripts": {
+    "dev:chrome": "cross-env EXT=$npm_config_ext vite -c vite.chrome.config.ts",
+    "build:chrome": "cross-env EXT=$npm_config_ext vite build -c vite.chrome.config.ts",
+    "dev:firefox": "cross-env EXT=$npm_config_ext vite -c vite.firefox.config.ts",
+    "build:firefox": "cross-env EXT=$npm_config_ext vite build -c vite.firefox.config.ts"
+  }
+}
+```
+
+#### 3. Variables d'Environnement
+- `EXT` : Nom de l'extension à construire/développer
+- Utilisation : `--ext=mon-extension`
+- Valeur par défaut : 'boilerplate'
+
+Cette architecture permet de :
+- Isoler chaque extension dans son propre dossier
+- Réutiliser la configuration de base Vite
+- Générer des builds séparés pour chaque extension
+- Maintenir une compatibilité avec les builds Chrome et Firefox existants
+
 ### Browser Related Configurations
 
 - `manifest.config.ts` - Base extension manifest with common configuration

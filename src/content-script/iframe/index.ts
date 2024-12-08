@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router/auto'
 import { onMessage, sendMessage } from 'webext-bridge/content-script'
 import App from './app.vue'
 import routes from '~pages'
-import '../../assets/base.scss'
+import '@/core/base.scss'
 import './index.scss'
 
 // Initialisation de la connexion webext-bridge
